@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <title>Document</title>
+</head>
+<style>
+    .power {
+        color: brown;
+    }
+</style>
+
+<body>
+    <div id="app">
+
+        <div>
+            <!--判斷式  ?(是否正確)  有的話是ture 沒有的話是false-->
+            {{big > small ? 'ture':'false'}}
+        </div>
+        <!-- 雙層大括號插入值 -->
+        {{ message }}
+        <br>
+        {{num}}
+        </br>
+        {{person.name}}
+        </br>
+
+        {{date.getMonth()+1}}月{{date.getDate()}}日
+        <br>
+        {{date}}
+        <br>
+        <button v-on:click="startTimer()">時間繼續</button>
+        <button v-on:click="stopTimer()">時間停止</button>
+        <div>
+            <h3>姓名: {{person.name}}</h3>
+            <!-- <div>照片 :<img v-bind:src="{{person.image}}" :alt ='person.name'></div> -->
+            <div>照片 :<img :src="person.image" :alt='person.name' width="300"></div>
+            <p>性別 : {{person.gender}}</p>
+            <p>戰力 : {{person.power}}</p>
+        </div>
+        <div>======================================</div>
+        <!-- member in family 有點像是foreach -->
+        <div v-for="member in family">
+            <!-- <div class="photo">照片 :<img :src="member.image" :alt='person.name' width="300"></div> -->
+
+            <div v-if="member.power < 600">
+                <img :src="member.image[1]" alt="">
+            </div>
+            <div v-else>
+                <img :src="member.image[0]" alt="">
+            </div>
+            <!-- <p>性別 : {{member.gender}}</p> -->
+            <div v-if="member.gender === 'man'">性別:<i class="bi bi-gender-male"></i></div>
+            <div v-else>性別:<i class="bi bi-gender-female"></i></div>
+            <p class="power">戰力 : {{member.power}}</p>
+            <!-- <button @click="givePower(member)">增加戰力</button>  簡寫可以改成'@'-->
+            <button v-on:click="givePower(member)">增加戰力</button>
+            <button v-on:click="member.power--">減少戰力</button>
+            <div>======================================</div>
+        </div>
+        
+    </div>
+
+
+
+    <!--引入vue3-->
+    <script src="http://unpkg.com/vue@3"></script>
+
+    <!-- 引入vue的最新版 -->
+    <!-- <script src="http://unpkg.com/vue@next"></script> -->
+
+
+    <script>
+        
+        Vue.createApp({
+            //處理資料(function) -> 直接對應到畫面
+            data: function () {
+
+                return {
+                    //變數
+                    // num:2,
+                    big: 10,
+                    small: 5,
+                    message: 'hi',
+                    date: new Date(),
+                    time: null,
+                    timeFlag: true,
+
+                    //物件
+                    person: {
+                        name: 'Lee',
+                        gender: 'man',
+                        image: 'https://c1.staticflickr.com/3/2906/14596190340_25740dbcee_z.jpg',
+                        power: 500,
+                    },
+                    //陣列
+                    array: [
+                        50, 1000, 500
+                    ],
+                    family: [
+                        {
+                            gender: 'man',
+                            power: 500,
+                            num:2,
+                            image: ['https://c1.staticflickr.com/3/2906/14596190340_25740dbcee_z.jpg','https://img.game.gnlore.com/image/monster-hunter-rise-kushala-daora-700px.jpg']
+                        },
+                        {
+                            gender: 'man',
+                            power: 620,
+                            image: ['https://c1.staticflickr.com/3/2906/14596190340_25740dbcee_z.jpg','https://img.game.gnlore.com/image/monster-hunter-rise-kushala-daora-700px.jpg'],
+                            num: 2
+                        },
+                        {
+                            gender: 'girl',
+                            power: 1500,
+                            image: ['https://c1.staticflickr.com/3/2906/14596190340_25740dbcee_z.jpg','https://img.game.gnlore.com/image/monster-hunter-rise-kushala-daora-700px.jpg'],
+                            num: 2
+                        },
+                    ],
+                }
+
+            },
+
+
+
+            //方法(物件形式>
+            methods: {
+                giveMePower() {
+                    this.power++
+                },
+                givePower(Me) {
+                    // Me.power+=this.num
+                    // this.num+=2
+                    Me.power += Me.num
+                    Me.num += 2
+                },
+                startTimer() {
+                    if(this.timeFlag){
+                        this.time = setInterval(() => {
+                            this.date = new Date
+                        }, 1000)
+                    }
+                    this.timeFlag = false;
+                },
+                stopTimer() {
+                    clearInterval(this.time);
+                    this.timeFlag = true;
+                }
+            },
+
+            // 做初始化(涵式)
+            mounted: function () {
+                //  this.time = setInterval(()=>{
+                //    this.date = new Date
+                //  },1000)
+                this.startTimer();
+            }
+
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
